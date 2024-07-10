@@ -10,16 +10,14 @@ router.get("/health-check", (request: Request, response: Response) => {
 });
 
 routes.forEach((routefile) => {
-  const routePath = `./${routefile}`;
+  const routePath = path.join(__dirname, routefile);
   const route = require(routePath);
 
-  // Check if the route has a default export (ESM) or is directly a function (CommonJS)
   const routeMiddleware = route.default || route;
 
   if (typeof routeMiddleware === "function" || routeMiddleware instanceof Router) {
     router.use(`/${path.parse(routefile).name}`, routeMiddleware);
   } else {
-    console.error(`The route file ${routefile} does not export a valid router.`);
   }
 });
 

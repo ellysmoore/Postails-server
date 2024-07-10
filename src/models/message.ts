@@ -1,49 +1,119 @@
-"use strict";
 import { Model, Sequelize, DataTypes as DataTypesType } from "sequelize";
 interface Models {
   [key: string]: typeof Model;
 }
-module.exports = (sequelize: Sequelize, DataTypes: typeof DataTypesType) => {
+export default (sequelize: Sequelize, DataTypes: typeof DataTypesType) => {
   class Message extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+    public id!: number;
+    public user_id!: number;
+    public senderPhone!: string;
+    public recipient!: string;
+    public message!: string;
+    public type!: string;
+    public status!: string;
+    public sendAttempt!: string;
+    public sendTime!: Date;
+    public sendAt!: Date;
+    public batchId!: number;
+    public messageReference!: string;
+    public createdAt!: Date;
+    public createdBy!: string;
+    public updatedAt!: Date;
+    public updatedBy!: string;
+    public deletedAt!: Date | null;
+    public deletedBy!: string;
+
     static associate(models: Models) {
-      // define association here
+      // Define associations here
     }
   }
+
   Message.init(
     {
       guid: {
         allowNull: false,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypesType.UUID,
+        defaultValue: DataTypesType.UUIDV4,
         unique: true,
       },
-      user_id: DataTypes.INTEGER,
-      sender_phone: DataTypes.STRING,
-      recipient: DataTypes.STRING,
-      message: DataTypes.STRING,
-      type: DataTypes.STRING,
-      status: DataTypes.STRING,
-      send_attempt: DataTypes.STRING,
-      send_time: DataTypes.DATE,
-      send_at: DataTypes.DATE,
-      batch_id: DataTypes.INTEGER,
-      message_reference: DataTypes.STRING,
-      createdAt: DataTypes.DATE,
-      createdBy: DataTypes.STRING,
-      updatedAt: DataTypes.DATE,
-      updatedBy: DataTypes.STRING,
-      deletedAt: DataTypes.DATE,
-      deletedBy: DataTypes.STRING,
+      user_id: {
+        type: DataTypesType.INTEGER,
+        allowNull: false,
+      },
+      sender_phone: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      recipient: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      message: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      type: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      status: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      send_attempt: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      send_time: {
+        type: DataTypesType.DATE,
+        allowNull: true,
+      },
+      send_at: {
+        type: DataTypesType.DATE,
+        allowNull: true,
+      },
+      batch_id: {
+        type: DataTypesType.INTEGER,
+        allowNull: true,
+      },
+      message_reference: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      createdAt: {
+        type: DataTypesType.DATE,
+        allowNull: false,
+        defaultValue: DataTypesType.NOW,
+      },
+      createdBy: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      updatedAt: {
+        type: DataTypesType.DATE,
+        allowNull: false,
+        defaultValue: DataTypesType.NOW,
+      },
+      updatedBy: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      deletedAt: {
+        type: DataTypesType.DATE,
+        allowNull: true,
+      },
+      deletedBy: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
     },
     {
       sequelize,
       modelName: "Message",
+      timestamps: true,
+      paranoid: true, // This will enable the 'deletedAt' functionality
     }
   );
+
   return Message;
 };

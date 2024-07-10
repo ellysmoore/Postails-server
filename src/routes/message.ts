@@ -1,12 +1,16 @@
 import { Segments, Joi, celebrate } from "celebrate";
 import { get_message, get_messages, send_message } from "../controllers/message.controller";
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import { accessToken } from "../middleware/access";
 
 const router = Router();
 
-router.get("/", accessToken, get_messages);
-router.get("/:id", accessToken, get_message);
+router.get("/health-check", (request: Request, response: Response) => {
+  response.json({ message: "Health Check Passed" });
+});
+
+router.get("/", get_messages);
+router.get("/:id", get_message);
 router.post(
   "/",
   accessToken,
@@ -26,4 +30,4 @@ router.post(
   send_message
 );
 
-module.exports = router;
+export default router;

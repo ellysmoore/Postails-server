@@ -13,7 +13,7 @@ export const get_messages = async (request: Request, response: Response, next: N
 export const get_message = async (request: Request, response: Response, next: NextFunction) => {
   const { id } = request.params;
   try {
-    const message = await getMessage({ id, deletedAt: null });
+    const message = await getMessage({ id, user_id: 1, deletedAt: null });
     if (message == null) return response.json({ message }).status(422);
     return response.json({ message }).status(200);
   } catch (error) {

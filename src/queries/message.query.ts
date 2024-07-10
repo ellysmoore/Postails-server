@@ -19,9 +19,9 @@ export const sendMessage = async (user_id: number, sender_phone: string, recipie
 };
 
 export const getMessages = async (query = {}) => {
-  return await Message.findAll(query);
+  return await Message.findAll({ where: query });
 };
 
 export const getMessage = async (query = {}) => {
-  return await Message.findOne(query);
+  return await Message.findOne({ where: query });
 };

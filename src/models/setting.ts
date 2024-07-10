@@ -1,40 +1,79 @@
-"use strict";
 import { Model, Sequelize, DataTypes as DataTypesType } from "sequelize";
+
 interface Models {
   [key: string]: typeof Model;
 }
-module.exports = (sequelize: Sequelize, DataTypes: typeof DataTypesType) => {
-  class Setting extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models: Models) {
-      // define association here
-    }
+
+class Setting extends Model {
+  public id!: number;
+  public guid!: string;
+  public appId!: string;
+  public apiKey!: string;
+  public createdAt!: Date;
+  public createdBy!: string;
+  public updatedAt!: Date;
+  public updatedBy!: string;
+  public deletedAt!: Date | null;
+  public deletedBy!: string;
+
+  static associate(models: Models) {
+    // Define associations here
   }
+}
+
+export const initSettingModel = (sequelize: Sequelize) => {
   Setting.init(
     {
       guid: {
         allowNull: false,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        type: DataTypesType.UUID,
+        defaultValue: DataTypesType.UUIDV4,
         unique: true,
       },
-      app_id: DataTypes.STRING,
-      api_key: DataTypes.STRING,
-      createdAt: DataTypes.DATE,
-      createdBy: DataTypes.STRING,
-      updatedAt: DataTypes.DATE,
-      updatedBy: DataTypes.STRING,
-      deletedAt: DataTypes.DATE,
-      deletedBy: DataTypes.STRING,
+      app_id: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      api_key: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      createdAt: {
+        type: DataTypesType.DATE,
+        allowNull: false,
+        defaultValue: DataTypesType.NOW,
+      },
+      createdBy: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      updatedAt: {
+        type: DataTypesType.DATE,
+        allowNull: false,
+        defaultValue: DataTypesType.NOW,
+      },
+      updatedBy: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
+      deletedAt: {
+        type: DataTypesType.DATE,
+        allowNull: true,
+      },
+      deletedBy: {
+        type: DataTypesType.STRING,
+        allowNull: true,
+      },
     },
     {
       sequelize,
       modelName: "Setting",
+      timestamps: true,
+      paranoid: true, // This will enable the 'deletedAt' functionality
     }
   );
+
   return Setting;
 };
+
+export default initSettingModel;

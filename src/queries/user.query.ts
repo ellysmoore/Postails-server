@@ -9,7 +9,7 @@ export const createUser = async (email: string, fullname: string) => {
 };
 
 export const getUser = async (query = {}) => {
-  return await User.findOne(query);
+  return await User.findOne({ where: query });
 };
 
 export default { createUser };

@@ -17,4 +17,4 @@ router.post(
   create_user
 );
 
-module.exports = router;
+export default router;
