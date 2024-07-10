@@ -36,18 +36,12 @@ fs.readdirSync(__dirname)
     return file.indexOf(".") !== 0 && file !== basename && (file.slice(-3) === ".ts" || file.slice(-3) === ".js");
   })
   .forEach((file) => {
-    console.log("====================================");
-    console.log({ file });
-    console.log("====================================");
     const modelDefiner = require(path.join(__dirname, file));
     const model = modelDefiner.default ? modelDefiner.default(sequelize, DataTypes) : modelDefiner(sequelize, DataTypes);
     db[model.name] = model;
   });
 
 Object.keys(db).forEach((modelName) => {
-  console.log("====================================");
-  console.log({ modelName });
-  console.log("====================================");
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

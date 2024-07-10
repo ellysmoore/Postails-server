@@ -9,8 +9,8 @@ router.get("/health-check", (request: Request, response: Response) => {
   response.json({ message: "Health Check Passed" });
 });
 
-router.get("/", get_messages);
-router.get("/:id", get_message);
+router.get("/", accessToken, get_messages);
+router.get("/:id", accessToken, get_message);
 router.post(
   "/",
   accessToken,
