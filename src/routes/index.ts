@@ -9,6 +9,18 @@ router.get("/health-check", (request: Request, response: Response) => {
   response.json({ message: "Health Check Passed" });
 });
 
-routes.forEach((routefile) => router.use(`/${path.parse(routefile).name}`, require(`./${routefile}`)));
+routes.forEach((routefile) => {
+  const routePath = `./${routefile}`;
+  const route = require(routePath);
+
+  // Check if the route has a default export (ESM) or is directly a function (CommonJS)
+  const routeMiddleware = route.default || route;
+
+  if (typeof routeMiddleware === "function" || routeMiddleware instanceof Router) {
+    router.use(`/${path.parse(routefile).name}`, routeMiddleware);
+  } else {
+    console.error(`The route file ${routefile} does not export a valid router.`);
+  }
+});
 
 export default router;
