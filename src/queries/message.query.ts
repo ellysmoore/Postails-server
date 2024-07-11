@@ -1,7 +1,7 @@
 import DB from "../models";
 const { Message } = DB;
 
-export const sendMessage = async (user_id: number, sender_phone: string, recipient: string, message: string, type: string, send_at: Date, batch_id: number, send_attempt: number, send_time: Date, createdBy: string, message_reference: string | null = null, status: string = "sent") => {
+export const sendMessage = async (user_id: number, sender_phone: string, recipient: [], message: string, type: string, send_at: Date, batch_id: number, send_attempt: number, send_time: Date, createdBy: string, message_reference: string | null = null, status: string = "sent") => {
   return await Message.create({
     user_id,
     sender_phone,

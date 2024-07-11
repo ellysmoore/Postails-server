@@ -17,7 +17,7 @@ router.post(
   celebrate({
     [Segments.BODY]: Joi.object().keys({
       sender_phone: Joi.string().required(),
-      recipient: Joi.string().required(),
+      recipient: Joi.array().required(),
       message: Joi.string().required(),
       type: Joi.string().required(),
       send_at: Joi.date().required(),
