@@ -6,13 +6,20 @@ import routes from "./routes";
 import dotenv from "dotenv";
 import { isCelebrate, errors, celebrate } from "celebrate";
 // import config from "./utils/AuthO";
+import http from "http";
+import { Server } from "socket.io";
+import { SetupSocket } from "./utils/websocket";
 
 dotenv.config();
 const app: Application = express();
 const PORT = process.env.PORT || 7466;
+const server = http.createServer(app);
+const io = new Server(server);
 
 app.use(bodyParser.json());
 app.use("/api/v1", routes);
+
+SetupSocket(io);
 
 app.use(function (request, response, next) {
   // Website you wish to allow to connect
@@ -34,15 +41,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (isCelebrate(err)) return res.status(400).json({ success: false, message: err.message.replace(/["]+/g, "").replace(/(_)/g, " ") });
 });
 
-db.sequelize
-  .sync()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server is running on http://127.0.0.1:${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.log("====================================");
-    console.log({ error });
-    console.log("====================================");
+db.sequelize.sync().then(() => {
+  server.listen(PORT, () => {
+    console.log(`Server is running on http://127.0.0.1:${PORT}`);
   });
+});

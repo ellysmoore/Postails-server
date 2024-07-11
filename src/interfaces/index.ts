@@ -15,3 +15,9 @@ export interface DBConfig {
   seederStoragePath?: string;
   seederStorageTableName?: string;
 }
+
+export interface IMessage {
+  id: number;
+  message: string;
+  createdAt?: Date;
+}
