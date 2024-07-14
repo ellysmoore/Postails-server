@@ -9,6 +9,18 @@ router.get("/health-check", (request: Request, response: Response) => {
   response.json({ message: "Health Check Passed" });
 });
 
+const messageSchema = Joi.object().keys({
+  sender_phone: Joi.string().required(),
+  recipient: Joi.array().items(Joi.string()).required(),
+  message: Joi.string().required(),
+  type: Joi.string().required(),
+  send_at: Joi.date().required(),
+  batch_id: Joi.number().required(),
+  send_attempt: Joi.number().required(),
+  send_time: Joi.string().required(),
+  message_reference: Joi.string().allow("", null),
+});
+
 router.get("/", accessToken, get_messages);
 router.get("/:id", accessToken, get_message);
 router.post(
@@ -16,15 +28,7 @@ router.post(
   accessToken,
   celebrate({
     [Segments.BODY]: Joi.object().keys({
-      sender_phone: Joi.string().required(),
-      recipient: Joi.array().required(),
-      message: Joi.string().required(),
-      type: Joi.string().required(),
-      send_at: Joi.date().required(),
-      batch_id: Joi.number().required(),
-      send_attempt: Joi.number().required(),
-      send_time: Joi.string().required(),
-      message_reference: Joi.string().allow("", null),
+      messages: Joi.array().items(messageSchema),
     }),
   }),
   send_message

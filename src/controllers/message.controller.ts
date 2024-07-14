@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { getMessage, getMessages, getUser, sendMessage } from "../queries";
+import { ISendMessage } from "../interfaces";
 
 export const get_messages = async (request: Request, response: Response, next: NextFunction) => {
   try {
@@ -22,12 +23,31 @@ export const get_message = async (request: Request, response: Response, next: Ne
 };
 
 export const send_message = async (request: Request, response: Response, next: NextFunction) => {
-  const { sender_phone, recipient, message, type, send_at, batch_id, send_attempt, send_time, message_reference } = request.body;
+  const { messages } = request.body;
   try {
     const user = await getUser();
-    const send = await sendMessage(user.id, sender_phone, recipient, message, type, send_at, batch_id, send_attempt, send_time, user.fullname, message_reference);
-    return response.json({ send }).status(201);
+    const promises = messages.map((message: ISendMessage) => {
+      return sendMessage({
+        user_id: user.id,
+        sender_phone: message.sender_phone,
+        recipient: message.recipient,
+        message: message.message,
+        type: message.type,
+        send_at: message.send_at,
+        batch_id: message.batch_id,
+        send_attempt: message.send_attempt,
+        send_time: message.send_time,
+        createdBy: user.fullname,
+        message_reference: message.message_reference,
+        status: "sent",
+      });
+    });
+    await Promise.all(promises);
+    return response.json({ status: true, message: "Message sent successfully" }).status(201);
   } catch (error) {
+    console.log("====================================");
+    console.log({ error });
+    console.log("====================================");
     return response.json({ error }).status(500);
   }
 };
