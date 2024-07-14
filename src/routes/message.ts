@@ -15,10 +15,11 @@ const messageSchema = Joi.object().keys({
   message: Joi.string().required(),
   type: Joi.string().required(),
   send_at: Joi.date().required(),
-  batch_id: Joi.number().required(),
+  batch_id: Joi.number().allow("", null),
   send_attempt: Joi.number().required(),
   send_time: Joi.string().required(),
   message_reference: Joi.string().allow("", null),
+  status: Joi.string().required(),
 });
 
 router.get("/", accessToken, get_messages);
