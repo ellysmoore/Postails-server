@@ -11,7 +11,7 @@ router.get("/health-check", (request: Request, response: Response) => {
 
 const messageSchema = Joi.object().keys({
   sender_phone: Joi.string().required(),
-  recipient: Joi.array().items(Joi.string()).required(),
+  recipient: Joi.string().required(),
   message: Joi.string().required(),
   type: Joi.string().required(),
   send_at: Joi.date().required(),

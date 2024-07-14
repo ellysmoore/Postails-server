@@ -45,7 +45,7 @@ export default (sequelize: Sequelize, DataTypes: typeof DataTypesType) => {
         allowNull: true,
       },
       recipient: {
-        type: DataTypesType.JSON,
+        type: DataTypesType.STRING,
         allowNull: true,
       },
       message: {
