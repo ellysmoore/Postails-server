@@ -28,8 +28,9 @@ export interface ISendMessage {
   message: string;
   type: string;
   send_at: Date;
-  batch_id: Number;
+  batch_id?: Number;
   send_attempt: Number;
   send_time: Date;
   message_reference?: string;
+  status: string;
 }

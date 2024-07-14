@@ -39,7 +39,7 @@ export const send_message = async (request: Request, response: Response, next: N
         send_time: message.send_time,
         createdBy: user.fullname,
         message_reference: message.message_reference,
-        status: "sent",
+        status: message.status,
       });
     });
     await Promise.all(promises);
